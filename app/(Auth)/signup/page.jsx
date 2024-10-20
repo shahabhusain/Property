@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Auth from "@/public/assets/Auth.svg";
+import Auth from "../../../public/assets/Auth.svg";
 import Otp from "../../components/authScreen/Otp";
 import SignUpForm from "../../components/authScreen/SignUpForm";
 import Login from "../../components/authScreen/Login";
