@@ -2,7 +2,6 @@ import Image from "next/image";
 import React from "react";
 import footerLogo from "@/public/assets/fLogo.svg";
 import map from '@/public/assets/map.png'
-import icon from '@/public/assets/icon.png'
 import Link from "next/link";
 import profile from '@/public/assets/profile.png'
 import { FaFacebook, FaGoogle, FaInstagram, FaTwitter } from "react-icons/fa";
@@ -31,12 +30,21 @@ const Footer = () => {
        <div className=" flex flex-col gap-6">
        <ul className=" flex flex-col gap-5">
         <li className=" text-[18px] font-[500]">Quick Navigation</li>
-        <li className=" text-[18px] font-[500]">Home</li>
-        <li className=" text-[18px] font-[500]">Buy</li>
-        <li className=" text-[18px] font-[500]">Off Plane</li>
-        <li className=" text-[18px] font-[500]">Property</li>
-        <li className=" text-[18px] font-[500]">About</li>
-        <li className=" text-[18px] font-[500]">Contact</li>
+        <Link href="/buy" className="cursor-pointer text-[18px] font-[500]">
+          Buy
+        </Link>
+        <Link href="/offline" className="cursor-pointer text-[18px] font-[500]">
+          Off Plan
+        </Link>
+        <Link href="/properties" className="cursor-pointer text-[18px] font-[500]">
+          Properties
+        </Link>
+        <Link href="/about" className="cursor-pointer text-[18px] font-[500]">
+          About
+        </Link>
+        <Link href="/contact" className="cursor-pointer text-[18px] font-[500]">
+          Contact
+        </Link>
       </ul>
 
       <a
@@ -61,8 +69,10 @@ const Footer = () => {
         </div>
        </div>
 
+        <div className=" flex flex-col gap-5">
         <p className=" mt-3 text-[15px] font-[300] max-w-[222px]">We are here to change your future.</p>
-        <button className="bg-[#AE8E50] rounded-md text-white font-medium py-2 px-4 mt-4">Contact</button>
+        <Link href="/contact" className="bg-[#AE8E50] w-fit rounded-md text-white font-medium py-2 px-4 ">Contact</Link>
+        </div>
 
         <div className=" flex items-center gap-12 mt-[15rem]">
              <button className=" bg-[#AE8E50] py-3 px-3 rounded-full text-white"><FaInstagram /></button>

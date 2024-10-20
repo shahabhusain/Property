@@ -69,8 +69,11 @@ const InputFiels = () => {
           {/*  */}
         </div>
 
-        <div className={`flex ${open ? "w-full" : "w-[50%]"} gap-4 items-center`}>
-        <div className="relative w-full">
+     
+        {/*  */}
+           {
+            open  ? <div className="flex w-[100%] gap-4 items-center">
+               <div className="relative w-full">
           <select className="appearance-none py-2 pl-3 pr-10 rounded-full w-full bg-white border border-gray-300">
             <option value="Name">Bathrooms</option>
             <option value="Email">Email</option>
@@ -105,9 +108,7 @@ const InputFiels = () => {
             <Image src={select} alt="image" />
           </span>
         </div>
-        {/*  */}
-           {
-            open  ? <> <div className="relative w-full">
+             <div className="relative w-full">
             <select className="appearance-none py-2 pl-3 pr-10 rounded-full w-full bg-white border border-gray-300">
               <option value="Name">Min Area</option>
               <option value="Email">Email</option>
@@ -156,11 +157,10 @@ const InputFiels = () => {
               <Image src={select} alt="image" />
             </span>
           </div>
-          {/*  */}</> : ""
+          {/*  */}</div> : ""
            }
         </div>
       </div>
-    </div>
   );
 };
 
