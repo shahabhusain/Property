@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import auth from '@/public/assets/auth.png'
 import Otp from "../../components/authScreen/Otp";
 import SignUpForm from "../../components/authScreen/SignUpForm";
 import Login from "../../components/authScreen/Login";
@@ -16,7 +17,7 @@ const SignUp = () => {
       <div className="flex justify-between gap-12 px-12 bg-[#ECECEC] w-[92%] mx-auto py-12 my-12">
         <Image
           className="w-1/2"
-          src="/assets/Auth.svg"
+          src={auth}
           alt="Auth Image"
           width={500} 
           height={500}
