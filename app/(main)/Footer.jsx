@@ -8,7 +8,7 @@ import { FaFacebook, FaGoogle, FaInstagram, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <div className="bg-black text-white pt-20 pb-10 rounded-t-xl mt-32 ">
-         <div className=" flex justify-between w-[90%] mx-auto" >
+         <div className=" flex flex-col md:flex-row md:justify-between w-[90%] mx-auto" >
       {/*  */}
         <div>
         <Image src={footerLogo} alt='image' />

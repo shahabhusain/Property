@@ -6,8 +6,8 @@ import Otp from "../../components/authScreen/Otp";
 import SignUpForm from "../../components/authScreen/SignUpForm";
 import Login from "../../components/authScreen/Login";
 import ForgetPassword from "../../components/authScreen/ForgetPassword";
-import ForgetPasswoordOtp from "../../components/authScreen/ForgetPasswoordOtp";
 import ChangePassword from "../../components/authScreen/ChangePassword";
+import EmailVefiedOtp from "@/app/components/authScreen/EmailVefiedOtp";
 
 const SignUp = () => {
   const [open, setOpen] = useState(0);
@@ -16,7 +16,7 @@ const SignUp = () => {
     <>
       <div className="flex justify-between gap-12 px-12 bg-[#ECECEC] w-[92%] mx-auto py-12 my-12">
         <Image
-          className="w-1/2"
+          className="w-1/2 md:flex hidden"
           src={auth}
           alt="Auth Image"
           width={500} 
@@ -30,11 +30,10 @@ const SignUp = () => {
           <Login setOpen={setOpen} />
         ) : open === 3 ? (
           <ForgetPassword setOpen={setOpen} />
-        ) : open === 4 ? (
-          <ForgetPasswoordOtp setOpen={setOpen} />
         ) : open === 5 ? (
           <ChangePassword setOpen={setOpen} />
-        ) : null}
+        ) : open === 6 ? (
+            <EmailVefiedOtp setOpen={setOpen} />)  : null }
       </div>
     </>
   );

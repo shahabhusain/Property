@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BuyPropertiesData } from "../../../lib/StaticData";
 import { similarData } from "../../../lib/StaticData";
 import proDetail from "../../../../public/assets/proDetail.png";
@@ -21,16 +21,47 @@ import bath from '../../../../public/assets/bath.svg'
 import { AiOutlineMessage } from "react-icons/ai";
 import { FaWhatsapp } from "react-icons/fa";
 import { VscCallOutgoing } from "react-icons/vsc";
+import { axiosPrivateForm } from "@/app/lib/axios";
+import { useRouter } from "next/navigation";
 
 const PropertyDetail = ({ params }) => {
   const { propertiesid: id } = params;
+  const [property, setProperty] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    // Fetch property data from the API using the id
+    const fetchPropertyData = async () => {
+      try {
+        const response = await axiosPrivateForm.get(`/si/property/?propertyId=${id}`);
+        setProperty(response.data?.data)
+        console.log("data", response.data)
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const property = BuyPropertiesData.find((item) => item.id == id);
+    fetchPropertyData();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   if (!property) {
-    console.error("Property not found for ID:", id);
     return <div>Property not found!</div>;
   }
+
+  const handleNavigate = (id) => {
+    router.push(`/home/${id}`);
+  };
 
   return (
     <div className=" w-[90%] mx-auto mt-32">
@@ -39,20 +70,26 @@ const PropertyDetail = ({ params }) => {
 <div className=" mt-12">
   <div className=" flex items-center justify-between">
     <h1 className=" text-[35px] font-[600] text-black max-w-[555px]">
-      Spacious 3 Bedroom <span className="text-[#AE8E50]">|</span> Marina
-      View <span className="text-[#AE8E50]">|</span> Expansive Balcony
+      {property.property.title} <span className="text-[#AE8E50]">|</span> 
     </h1>
     <div className=" flex flex-col items-start gap-1">
       <button className=" py-1 px-4 border-[1px] border-[#AE8E50] text-black rounded-md">
         Best Price
       </button>
       <h1 className=" text-[30px] font-[700] text-[#AE8E50]">
-        AED 6,000,000
+         {property.property.price}
       </h1>
     </div>
   </div>
   <div className=" relative mt-3">
-    <Image src={proDetail} alt="detail" />
+  <Image
+    src={property?.property.
+      exterior?.images[0]}
+    alt="detail"
+    width={1400}
+    height={50}
+    className=" object-cover"
+  />
     <div className=" flex items-center gap-5 absolute top-12 left-5">
       <button className=" bg-[#AE8E50] py-2 px-6 rounded-md text-white flex items-center gap-2">
         Like
@@ -76,21 +113,7 @@ const PropertyDetail = ({ params }) => {
         </h1>
         <div className=" h-[1px] w-full bg-[#AE8E50]"></div>
         <p className=" text-[#282828] text-[18px] font-[400]">
-          Lorem ipsum dolor sit amet consectetur. Est turpis varius mauris
-          faucibus urna gravida metus sit. Nullam amet id aliquam tortor.
-          Odio lectus rutrum sit volutpat at. Mattis dui arcu a lacus
-          tristique. Dictum cursus morbi mauris a a ultrices. Proin
-          fringilla at suscipit tempor ridiculus. Ultricies dictum dolor
-          feugiat elit lorem quam at pellentesque. Tellus porttitor
-          venenatis amet at non sit auctor augue. In mi bibendum proin
-          volutpat neque morbi malesuada vulputate. Est eros tempor
-          euismod diam. Et arcu pretium mattis facilisis id. Consequat
-          dictumst semper non adipiscing netus. Tortor ornare neque
-          venenatis tempus ornare quam. Sed lorem at vitae adipiscing. Sed
-          ipsum tincidunt egestas tempor. Aliquam vulputate iaculis odio
-          tristique viverra. Ut aliquet integer sagittis venenatis
-          pretium. Donec fermentum donec sagittis est. Senectus lectus
-          tincidunt faucibus sapien.
+          {property.property.description}
         </p>
         <div className=" flex items-center justify-between px-12">
           <h1 className=" flex flex-col gap-1 items-center bg-[#AE8E50] py-5 px-5 rounded-md">
@@ -111,30 +134,29 @@ const PropertyDetail = ({ params }) => {
         <h1 className="text-[30px] font-[700] text-[#AE8E50] pl-6">Interior</h1>
         <div className=" h-[1px] w-full bg-[#AE8E50]"></div>
         <div className=" flex flex-col gap-3 pr-[15rem] pl-6">
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Living area <span className=" font-[600]">1,400 sq.ft</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Living room surface <span className=" font-[600]">200 sq.ft</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Bedrooms <span className=" font-[600]">5</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Bathrooms <span className=" font-[600]">4</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Furnished <span className=" font-[600]">No</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Living area <span className=" font-[600]">{property.property.interior.living_area_size_in_sq_ft}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Living room surface <span className=" font-[600]">{property.property.interior.size_in_sq_ft}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Bedrooms <span className=" font-[600]">{property.property.interior.number_of_bedrooms}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Furnished <span className=" font-[600]">{property.property.interior.furnished}</span></h1>
         </div>
 
         <h1 className="text-[30px] font-[700] text-[#AE8E50] pl-6">Exterior</h1>
         <div className=" h-[1px] w-full bg-[#AE8E50]"></div>
         <div className=" flex flex-col gap-3 pr-[15rem] pl-6">
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Gas, water & electricity <span className=" font-[600]">Yes</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Garden surface <span className=" font-[600]">38 sq.ft</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Terrace surface<span className=" font-[600]">15 sq.ft</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Gas, water & electricity <span className=" font-[600]">{property.property.exterior.gas_water_electricity}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Garden surface <span className=" font-[600]">{property.property.exterior.garden_surface_in_sq_ft}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Terrace surface<span className=" font-[600]">{property.property.exterior.terrace_surface}</span></h1>
         </div>
       </div>
       <div className=" bg-[white] rounded-md flex flex-col gap-6 py-4 px-4 mt-5">
       <h1 className="text-[30px] font-[700] text-[#AE8E50] pl-6">Ammenties</h1>
         <div className=" h-[1px] w-full bg-[#AE8E50]"></div>
         <div className=" flex flex-col gap-3 pr-[15rem] pl-6">
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Metro Access <span className=" font-[600]">Reading Area</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Green Area <span className=" font-[600]">Free Wifi Internet</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Enterance Door<span className=" font-[600]">Area Security</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Inside Street<span className=" font-[600]">24 Hour Electricity</span></h1>
-        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Jogging Area<span className=" font-[600]">Basketball Court</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Metro Access <span className=" font-[600]">{property.property.amenities.metro_access}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Green Area <span className=" font-[600]">{property.property.amenities.green_area}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Enterance Door<span className=" font-[600]">{property.property.amenities.entrance_door}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Inside Street<span className=" font-[600]">{property.property.amenities.inside_street}</span></h1>
+        <h1 className=" text-[17px] font-[500] text-black flex items-center justify-between ">Jogging Area<span className=" font-[600]">{property.property.amenities.jogging_area}</span></h1>
         </div>
       </div>
     </div>

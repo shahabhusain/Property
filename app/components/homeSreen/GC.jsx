@@ -71,7 +71,7 @@ const GC = () => {
           </div>
         </div>
       </div>
-     <div>
+     <div className=" fixed top-[40rem] right-12">
      <button
         onClick={openModal}
         className="absolute right-0 w-[50px] mt-5 "

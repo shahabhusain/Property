@@ -8,13 +8,13 @@ import { FaFacebook, FaGoogle, FaInstagram, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <div className="bg-black text-white pt-20 pb-10 rounded-t-xl mt-32 ">
-         <div className=" flex justify-between w-[90%] mx-auto" >
+         <div className=" flex flex-col md:flex-row md:justify-between w-[90%] mx-auto" >
       {/*  */}
         <div>
         <Image src={footerLogo} alt='image' />
 
 <div>
-  <h1 className="text-lg font-semibold mt-[10rem]">Subscribe to our news</h1>
+  <h1 className="text-lg font-semibold md:mt-[10rem] mt-7">Subscribe to our news</h1>
   <p className=" max-w-[355px] mt-4 text-[14px] font-[400]">
     Stay Informed and Never Miss a Beat: Subscribe to Our Exclusive News
     Updates!
@@ -29,7 +29,7 @@ const Footer = () => {
       {/*  */}
        <div className=" flex flex-col gap-6">
        <ul className=" flex flex-col gap-5">
-        <li className=" text-[18px] font-[500]">Quick Navigation</li>
+        <li className=" text-[18px] font-[500] mt-8 md:mt-0">Quick Navigation</li>
         <Link href="/buy" className="cursor-pointer text-[18px] font-[500]">
           Buy
         </Link>
@@ -54,13 +54,13 @@ const Footer = () => {
       >
         <Image src={map} alt='image' />
       </a>
-      <p className=" flex flex-col text-[14px] font-[500]">123 Zayed Road, <span>Dubai Marina,</span> <span>Dubai, United Arab Emirates</span></p>
+      <p className=" flex flex-col md:gap-0 gap-1 text-[14px] font-[500]">123 Zayed Road, <span>Dubai Marina,</span> <span>Dubai, United Arab Emirates</span></p>
        </div>
       {/*  */}
 
       {/*  */}
       <div>
-      <div className="">
+      <div className=" md:mt-0 mt-7">
        <div className=" flex items-center gap-7">
        <Image src={profile} alt='image' />
         <div className="">
@@ -74,20 +74,20 @@ const Footer = () => {
         <Link href="/contact" className="bg-[#AE8E50] w-fit rounded-md text-white font-medium py-2 px-4 ">Contact</Link>
         </div>
 
-        <div className=" flex items-center gap-12 mt-[15rem]">
+        <div className=" flex items-center gap-12 md:mt-[15rem] mt-[3rem]">
              <button className=" bg-[#AE8E50] py-3 px-3 rounded-full text-white"><FaInstagram /></button>
              <button className=" bg-[#AE8E50] py-3 px-3 rounded-full text-white"><FaFacebook /></button>
              <button className=" bg-[#AE8E50] py-3 px-3 rounded-full text-white"><FaTwitter /></button>
              <button className=" bg-[#AE8E50] py-3 px-3 rounded-full text-white"><FaGoogle /></button>
         </div>
 
-        <div className="mt-8 text-[#fff] flex items-center gap-9">
+        <div className="mt-8 text-[#fff] flex md:items-center gap-9">
        
-            <p className="mt-2 flex flex-col gap-2 text-center text-[14px] font-[400]">
+            <p className="mt-2 flex flex-col gap-2 md:text-center text-[14px] font-[400]">
               <span>Terms of Service</span>
               <span className=" font-[500] ">Privacy Policy</span>
             </p>
-            <p className=" flex flex-col gap-2 text-[14px] font-[400] text-center"><span>Sovereign International</span> <span className=" font-[500] ">Privacy Policy</span></p>
+            <p className=" flex flex-col gap-2 text-[14px] font-[400] md:text-center"><span>Sovereign International</span> <span className=" font-[500] ">Privacy Policy</span></p>
           </div>
        </div>
       </div>

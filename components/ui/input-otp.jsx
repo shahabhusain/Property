@@ -1,55 +1,57 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { DashIcon } from "@radix-ui/react-icons"
-import { OTPInput, OTPInputContext } from "input-otp"
+import React from "react"; // Import React explicitly for APIs like forwardRef
+import { DashIcon } from "@radix-ui/react-icons";
+import { OTPInput, OTPInputContext } from "input-otp";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const InputOTP = React.forwardRef(({ className, containerClassName, ...props }, ref) => (
   <OTPInput
     ref={ref}
     containerClassName={cn("flex items-center gap-2 has-[:disabled]:opacity-50 mt-20", containerClassName)}
     className={cn("disabled:cursor-not-allowed", className)}
-    {...props} />
-))
-InputOTP.displayName = "InputOTP"
+    {...props}
+  />
+));
+InputOTP.displayName = "InputOTP";
 
 const InputOTPGroup = React.forwardRef(({ className, ...props }, ref) => (
   <div ref={ref} className={cn("flex items-center", className)} {...props} />
-))
-InputOTPGroup.displayName = "InputOTPGroup"
+));
+InputOTPGroup.displayName = "InputOTPGroup";
 
 const InputOTPSlot = React.forwardRef(({ index, className, ...props }, ref) => {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
+  const inputOTPContext = React.useContext(OTPInputContext);
+  const slot = inputOTPContext.slots ? inputOTPContext.slots[index] : {};
+  const { char, hasFakeCaret, isActive } = slot || {};
 
   return (
-    (<div
+    <div
       ref={ref}
       className={cn(
-        "relative flex h-[4rem] w-[4rem] items-center justify-center m-2 border-y border-r border-none bg-[#D9D9D9] text-sm shadow-sm transition-all ",
+        "relative flex h-[4rem] w-[4rem] items-center justify-center m-2 border-y border-r border-none bg-[#D9D9D9] text-sm shadow-sm transition-all",
         isActive && "z-10 ring-1 ring-ring",
         className
       )}
-      {...props}>
+      {...props}
+    >
       {char}
       {hasFakeCaret && (
-        <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
         </div>
       )}
-    </div>)
+    </div>
   );
-})
-InputOTPSlot.displayName = "InputOTPSlot"
+});
+InputOTPSlot.displayName = "InputOTPSlot";
 
 const InputOTPSeparator = React.forwardRef(({ ...props }, ref) => (
   <div ref={ref} role="separator" {...props}>
     <DashIcon />
   </div>
-))
-InputOTPSeparator.displayName = "InputOTPSeparator"
+));
+InputOTPSeparator.displayName = "InputOTPSeparator";
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };

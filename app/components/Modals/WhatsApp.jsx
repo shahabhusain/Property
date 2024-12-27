@@ -18,7 +18,6 @@ import Time from "./whatappmodalcomponents/Time";
 
 const WhatsApp = () => {
   const [openModal, setOpenModal] = useState(1)
-  
   const { isChat, closeChat, openChat } = useCartStore((state) => state);
 
   return (
@@ -33,7 +32,7 @@ const WhatsApp = () => {
        <div className=" flex items-center gap-12">
            <button onClick={() => setOpenModal(1)} className={` text-[18px] font-[500] flex items-center gap-20  ${openModal === 1 ? "text-[#AE8E50]" : " text-black"}`}><span className="flex flex-col items-center gap-2"><VscCallOutgoing /> Call me now </span> <div className=" w-[1px] h-[50px] bg-[#AE8E50]"></div> </button>
            <button onClick={() => setOpenModal(2)} className={` text-[18px] font-[500] flex items-center gap-20  ${openModal === 2 ? "text-[#AE8E50]" : " text-black"}`}><span className="flex flex-col items-center gap-2"><FaCalendarAlt  /> Call me latter </span> <div className=" w-[1px] h-[50px] bg-[#AE8E50]"></div> </button>
-           <button onClick={() => setOpenModal(3)} className={` text-[18px] font-[500] flex items-center gap-20  ${openModal === 3 ? "text-[#AE8E50]" : " text-black"}`}><span className="flex flex-col items-center gap-2"><SlCamrecorder />  Schedule a message</span> <div className=" w-[1px] h-[50px] bg-[#AE8E50]"></div> </button>
+           <button onClick={() => setOpenModal(3)} className={` text-[18px] font-[500] flex items-center gap-20  ${openModal === 3 ? "text-[#AE8E50]" : " text-black"}`}><span className="flex flex-col items-center gap-2"><SlCamrecorder />  Consultation a message</span> <div className=" w-[1px] h-[50px] bg-[#AE8E50]"></div> </button>
            <button onClick={() => setOpenModal(4)} className={` text-[18px] font-[500] flex items-center gap-20  ${openModal === 4 ? "text-[#AE8E50]" : " text-black"}`}><span className="flex flex-col items-center gap-2"><TbMessageX /> Leave a message </span> </button>
           </div>
           <div>

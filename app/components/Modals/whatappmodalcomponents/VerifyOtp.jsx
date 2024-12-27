@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { axiosPrivateForm } from "@/app/lib/axios";
 
-const Otp = ({ setOpen }) => {
+const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,15 +40,12 @@ const Otp = ({ setOpen }) => {
 
     setIsLoading(true);
     setError(null);
-    const email = localStorage.getItem("email");
-    console.log("email", email);
+    const phone = localStorage.getItem("phone");
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/verify-email-otp`,
-        { emailOtpCode: otpString, otpEmail: email }
+      const response = await axiosPrivateForm.post("/calltoaction/verify-sms-otp",
+        {phoneNumber: phone, phoneOtpCode: otpString  }
       );
-      setOpen(2);
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong!");
       console.error("OTP verification failed:", error);
@@ -57,13 +55,8 @@ const Otp = ({ setOpen }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="md:w-1/2 md:px-14 w-full mt-12">
-      <div className="ml-2">
-        <h1 className="text-[#AE8E50] text-[35px] font-[600]">OTP Verification</h1>
-        <p className="text-[16px] font-[500] text-[#000] mt-3">
-          Enter the OTP sent to your Email
-        </p>
-      </div>
+    <form onSubmit={handleSubmit} className="w-1/2 px-14">
+        <h1 className="text-[#AE8E50] text-[35px] font-[600] text-center">OTP Verification</h1>
 
       <div className="flex justify-center gap-3 mt-8">
         {otp.map((digit, index) => (
@@ -82,7 +75,7 @@ const Otp = ({ setOpen }) => {
 
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-      <div className="mt-20 flex flex-col gap-2">
+      <div className="mt-8 flex flex-col gap-2">
         <button
           type="submit"
           className="bg-[#AE8E50] rounded-md text-white font-medium py-3 px-4 w-full text-center"
@@ -90,16 +83,6 @@ const Otp = ({ setOpen }) => {
         >
           {isLoading ? "Verifying..." : "Verify OTP"}
         </button>
-        <h1 className="text-[14px] font-[400] text-center mt-4">
-          Don’t have an account?{" "}
-          <button
-            type="button"
-            onClick={() => setOpen(0)}
-            className="underline text-[#AE8E50]"
-          >
-            SIGN UP
-          </button>
-        </h1>
       </div>
     </form>
   );
