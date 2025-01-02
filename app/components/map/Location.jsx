@@ -34,7 +34,7 @@ const Location = () => {
        </div>
        
     </div>
-      <div className=" flex items-center justify-between mt-12 gap-6">
+      <div className=" flex items-center justify-center mt-12 gap-6">
       <Image src={mapLogo} alt="maplogo" />
       <span className=" flex flex-col gap-1"><h1 className=" text-[17px] font-[600] text-black">Sovereign International</h1> <p className=" text-[11px] font-[300] text-black">Real Estate</p></span>
   </div>
