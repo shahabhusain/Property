@@ -19,7 +19,7 @@ const Map = ({ coordinates, setCoordinates, setBounds, places }) => {
   return (
     <div className="h-[100vh] w-full relative">
       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyDj6oHIfspofGcNUOAGtcpFOgRHOH8CKvE' }}
+        bootstrapURLKeys={{ key: process.env.GOOGLE_MAP_API }}
         center={coordinates || defaultCoordinates}
         defaultZoom={12}
         margin={[50, 50, 50, 50]}
