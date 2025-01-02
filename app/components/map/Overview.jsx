@@ -13,7 +13,8 @@ import Image from "next/image";
 const Overview = () => {
     const [open, setOpen] = useState(1)
   return (
-    <div className=" mt-5  rounded-md bg-white py-2 px-3">
+     <div>
+          <div className=" mt-5  rounded-md bg-white py-2 px-3">
         <div className=" flex items-center justify-between bg-[#f7f7f7] py-3 px-3">
             <button onClick={() => setOpen(1)} className={` text-[14px] font-[300] ${open === 1 ? " bg-[#AE8E50] px-2 rounded-sm text-white" : "text-[#393939]"}`}>All</button>
             <button onClick={() => setOpen(2)} className={` text-[14px] font-[300] ${open === 2 ? " bg-[#AE8E50] px-2 rounded-sm text-white" : "text-[#393939]"}`}>2020</button>
@@ -34,18 +35,22 @@ const Overview = () => {
           <p className=" text-[8px] font-[300] text-[#727272]">August 2024</p>
         </div>
       </div>
-       {
+         <div className=" my-12">
+         {
         open === 1 ? <><All /></> : open === 2 ? <><Map2020 /></> : open === 3 ? <><Map2021 /></> : open === 4 ? <><Map2022 /></> : open === 5 ? <><Map2023 /></> : open === 6 ? <><Map2024 /></> : null
        }
-       <div className=" flex flex-col gap-3 mt-24">
+         </div>
+       <div className=" flex flex-col gap-3 mt-7">
         <button className=" bg-white py-2 px-5 rounded-md border-[1px] border-[#AE8E50]">Chat With Us</button>
-        <div className=" flex items-center gap-6">
-            <Image src={mapLogo} alt="img" />
-            <span className=" flex flex-col gap-1"><h1 className=" text-[17px] font-[600] text-black">Sovereign International</h1> <p className=" text-[11px] font-[300] text-black">Real Estate</p></span>
-        </div>
-       </div>
        
+       </div>
+     
     </div>
+      <div className=" flex items-center justify-center gap-6 mt-12">
+      <Image src={mapLogo} alt="img" />
+      <span className=" flex flex-col gap-1"><h1 className=" text-[17px] font-[600] text-black">Sovereign International</h1> <p className=" text-[11px] font-[300] text-black">Real Estate</p></span>
+  </div>
+     </div>
   );
 };
 

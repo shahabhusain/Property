@@ -13,7 +13,8 @@ import Br4 from "./locationcomponents/Br4";
 const Location = () => {
     const [open, setOpen] = useState(1)
   return (
-    <div className=" mt-5  rounded-md bg-white py-2 px-3 flex flex-col gap-3">
+      <div>
+           <div className=" mt-5  rounded-md bg-white py-2 px-3 flex flex-col gap-3">
         <h1 className=" text-[20px] font-[400] text-black">All Locations</h1>
         <div className=" flex items-center justify-between bg-[#f7f7f7] py-3 px-3">
             <button onClick={() => setOpen(1)} className={` text-[14px] font-[300] ${open === 1 ? " bg-[#AE8E50] px-2 rounded-sm text-white" : "text-[#393939]"}`}>Average</button>
@@ -29,13 +30,15 @@ const Location = () => {
        }
        <div className=" flex flex-col gap-3">
         <button className=" bg-white py-2 px-5 rounded-md border-[1px] border-[#AE8E50]">Chat With Us</button>
-        <div className=" flex items-center gap-6">
-            <Image src={mapLogo} alt="maplogo" />
-            <span className=" flex flex-col gap-1"><h1 className=" text-[17px] font-[600] text-black">Sovereign International</h1> <p className=" text-[11px] font-[300] text-black">Real Estate</p></span>
-        </div>
+      
        </div>
        
     </div>
+      <div className=" flex items-center justify-between mt-12 gap-6">
+      <Image src={mapLogo} alt="maplogo" />
+      <span className=" flex flex-col gap-1"><h1 className=" text-[17px] font-[600] text-black">Sovereign International</h1> <p className=" text-[11px] font-[300] text-black">Real Estate</p></span>
+  </div>
+      </div>
   );
 };
 

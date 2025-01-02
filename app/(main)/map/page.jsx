@@ -1,26 +1,89 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Location from "@/app/components/map/Location";
 import Overview from "@/app/components/map/Overview";
 import Projects from "@/app/components/map/Projects";
-const Map = () => {
+import Map from '@/app/components/map/Map'
+import List from '@/app/components/map/List'
+import axios from 'axios';
+
+const Url = 'https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary';
+
+const getPlacesDat = async (sw, ne) => {
+  if (!sw || !ne) {
+    console.error('Error: Bounds are not defined.');
+    return [];
+  }
+
+  try {
+    const { data: { data } } = await axios.get(Url, {
+      params: {
+        bl_latitude: sw.lat,
+        tr_latitude: ne.lat,
+        bl_longitude: sw.lng,
+        tr_longitude: ne.lng,
+      },
+      headers: {
+        'x-rapidapi-key': 'e0a33f598fmsh1c199826554fdf6p12d2f8jsnf6a1d930a6ab',
+        'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching places data:', error);
+    return [];
+  }
+};
+
+const Map1 = () => {
     const [open, setOpen] = useState(1)
+    const [places, setPlaces] = useState([]);
+    const [coordinates, setCoordinates] = useState({});
+    const [bounds, setBounds] = useState(null);
+    const [type, setType] = useState("restaurants")
+    const [rating, setRating] = useState("")
+    const handleMarkerClick = (index) => {
+      console.log('Marker clicked:', places[index]);
+    };
+  
+    // Get user's current location
+    useEffect(() => {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          setCoordinates({ lat: latitude, lng: longitude });
+        },
+        (error) => console.error('Error fetching location:', error)
+      );
+    }, []);
+  
+    // Fetch places when bounds change
+    useEffect(() => {
+      if (bounds?.sw && bounds?.ne) { 
+        getPlacesDat(bounds.sw, bounds.ne)
+          .then((data) => {
+            console.log(data);
+            setPlaces(data || []); // Ensure no null data is set
+          })
+          .catch((error) => {
+            console.error('Error fetching places:', error);
+          });
+      }
+    }, [bounds]);
   return (
     <div className=" relative">
       <div className=" mt-32">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462563.0327106585!2d54.89782944320242!3d25.075658397134212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xbde66e5084295162!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1728842208065!5m2!1sen!2s"
-          width="1515"
-          height="1000"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <Map
+            places={places}
+            setCoordinates={setCoordinates}
+            setBounds={setBounds}
+            coordinates={coordinates}
+            onMarkerClick={handleMarkerClick}
+          />
       </div>
 
-      <div className=" bg-[#F7F7F7] w-[300px] py-4 px-3 absolute top-[7rem] left-3 ">
+      <div className="bg-[#F7F7F7] w-[400px] py-4 px-3 absolute top-[1rem] h-[800px] overflow-y-auto left-3"
+      >
          <h1>Dubai</h1>
          <div className=" bg-white py-2 px-3 flex items-center justify-between rounded-md" >
             <button onClick={() => setOpen(1)} className={`${open === 1 ? " py-1 px-2 text-white bg-[#AE8E50] rounded-sm" : ""}`}>Overview</button>
@@ -28,11 +91,18 @@ const Map = () => {
             <button onClick={() => setOpen(3)} className={`${open === 3 ? " py-1 px-2 text-white bg-[#AE8E50] rounded-sm" : ""}`}>Project</button>
          </div>
          {
-            open === 1 ? <><Overview /></> : open === 2 ? <><Location /></> : open === 3 ? <><Projects /></> : null
+            open === 1 ? <><Overview /></> : open === 2 ? <><Location /></> : open === 3 ? <> {
+              places?.map((place, i)=>(
+                  <div key={i}>
+                   <List place={place} />
+                  </div>
+              ))
+          }</> : null
          }
+                
       </div>
     </div>
   );
 };
 
-export default Map;
+export default Map1;
