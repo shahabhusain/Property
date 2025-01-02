@@ -41,11 +41,6 @@ const Map1 = () => {
     const [places, setPlaces] = useState([]);
     const [coordinates, setCoordinates] = useState({});
     const [bounds, setBounds] = useState(null);
-    const [type, setType] = useState("restaurants")
-    const [rating, setRating] = useState("")
-    const handleMarkerClick = (index) => {
-      console.log('Marker clicked:', places[index]);
-    };
   
     // Get user's current location
     useEffect(() => {
@@ -78,7 +73,6 @@ const Map1 = () => {
             setCoordinates={setCoordinates}
             setBounds={setBounds}
             coordinates={coordinates}
-            onMarkerClick={handleMarkerClick}
           />
       </div>
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+import Image from 'next/image';
 
-const Map = ({ coordinates, setCoordinates, setBounds, places, onMarkerClick }) => {
+const Map = ({ coordinates, setCoordinates, setBounds, places }) => {
   const defaultCoordinates = { lat: 33.996777, lng: 71.529724 };
 
   console.log('Coordinates:', coordinates);
@@ -27,9 +28,6 @@ const Map = ({ coordinates, setCoordinates, setBounds, places, onMarkerClick }) 
           setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
-        onChildClick={(child) => {
-          if (onMarkerClick) onMarkerClick(child);
-        }}
       >
         {places?.map(
           (place, i) =>
@@ -49,7 +47,7 @@ const Map = ({ coordinates, setCoordinates, setBounds, places, onMarkerClick }) 
                 {/* Marker with details for desktop */}
                 <div className="hidden md:block bg-white shadow-md rounded-lg p-2 max-w-xs">
                   <h4 className="text-sm font-semibold">{place.name}</h4>
-                  <img
+                  <Image width={100} height={24}
                     className="w-full h-24 object-cover rounded-md"
                     src={
                       place.photo?.images?.large?.url ||

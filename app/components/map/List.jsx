@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';  // Import the location icon from react-icons
 import { FiPhone } from 'react-icons/fi';  // Import the phone icon from react-icons
@@ -27,7 +28,7 @@ const PlaceDetails = ({ place}) => {
         </div>
         {place?.awards?.map((award) => (
           <div className="flex justify-between my-2 items-center">
-            <img src={award.images.small} alt={award.display_name} className="w-16 h-16 object-contain" />
+            <Image width={16} height={16} src={award.images.small} alt={award.display_name} className="w-16 h-16 object-contain" />
             <span className="text-sm text-gray-600">{award.display_name}</span>
           </div>
         ))}
