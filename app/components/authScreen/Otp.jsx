@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Otp = ({ setOpen }) => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,10 +48,12 @@ const Otp = ({ setOpen }) => {
         `${process.env.NEXT_PUBLIC_API_BASEURL}/auth/verify-email-otp`,
         { emailOtpCode: otpString, otpEmail: email }
       );
+      toast.success("Congratulations 🎉 your Email is verified")
       setOpen(2);
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong!");
       console.error("OTP verification failed:", error);
+      toast.error("something went wrong")
     } finally {
       setIsLoading(false);
     }
@@ -101,6 +104,7 @@ const Otp = ({ setOpen }) => {
           </button>
         </h1>
       </div>
+      <ToastContainer />
     </form>
   );
 };

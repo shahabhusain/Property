@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoCardOutline } from "react-icons/io5";
 import { IoMdPerson } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUpForm = ({ setOpen }) => {
   const [signUpData, setSignUpData] = useState(null);
@@ -33,11 +35,13 @@ const SignUpForm = ({ setOpen }) => {
         }
       );
       setSignUpData(response.data?.data);
-      setOpen(1); // Proceed to the next step
+      setOpen(1); 
          localStorage.setItem("email",email)
+         toast.success("Account created! Your OTP has been sent to 'shahabhussain098123@gmail.com")
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong!");
       console.error("Sign up failed:", error);
+      toast.error("Email already exist, please login or use another Email")
     } finally {
       setIsLoading(false);
     }
@@ -147,6 +151,7 @@ const SignUpForm = ({ setOpen }) => {
           </button>
         </h1>
       </div>
+      <ToastContainer />
     </form>
   );
 };

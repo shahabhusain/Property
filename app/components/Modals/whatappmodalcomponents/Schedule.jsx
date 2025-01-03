@@ -1,20 +1,33 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import modal from "../../../../public/assets/modal.png";
+import profile from "../../../../public/assets/profile1.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { axiosPrivateForm } from "@/app/lib/axios";
-
+import { format, parseISO, addMinutes } from "date-fns";
 const Schedule = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [agenda, setAgenda] = useState("");
-  const [duration, setDuration] = useState("30");
+  const [duration, setDuration] = useState("1");
   const [startDate, setStartDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [responses, setResponses] = useState([]);
+
+  const formattedStartTime = (start, duration) => {
+    const startTime = parseISO(start); // Parse ISO string to Date object
+    const endTime = addMinutes(startTime, duration); // Add duration in minutes for end time
+  
+    // Format start and end times
+    const formattedStart = format(startTime, "MMMM, EEEE do, HH:mm");
+    const formattedEnd = format(endTime, "HH:mm");
+  
+    return `${formattedStart} - ${formattedEnd}`;
+  };
 
   const handleSchedule = async () => {
     // Validate required fields
@@ -36,8 +49,9 @@ const Schedule = () => {
         duration,
         agenda,
       });
-
-      console.log(response.data); // Debug API response
+      setResponses([response.data?.data]);
+      console.log("data", response.data);
+      console.log("Responses State:", responses);
       setSuccessMessage(true);
     } catch (error) {
       console.error(error);
@@ -53,9 +67,7 @@ const Schedule = () => {
     <div className="flex flex-col items-center justify-center gap-y-3 mt-2 mb-6">
       <Image src={modal} alt="Modal" />
       {successMessage ? (
-        <p className="text-[22px] font-[600] text-center max-w-[555px]">
-          Your meeting has been created successfully.
-        </p>
+          <></>
       ) : (
         <>
           <h1 className="text-[22px] font-[600] text-center max-w-[555px]">
@@ -120,7 +132,14 @@ const Schedule = () => {
                 type="number"
                 className="py-1 px-2 border-[1px] border-[#BFBFBF] rounded-md"
                 value={duration}
-                onChange={(e) => setDuration(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value <= 30) {
+                    setDuration(value);
+                  }
+                }}
+                min="1"
+                max="30"
               />
             </div>
             <div className="flex flex-col gap-1 w-full">
@@ -144,9 +163,36 @@ const Schedule = () => {
         </>
       )}
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
-      <p className="text-[16px] font-[300] text-black">
-        Powered by Sovereign International
+      <>
+      {responses.map((item) => (
+  <div key={item._id} className="">
+               <div className=" flex flex-col items-center justify-center gap-y-3">
+               <h2 className="text-[18px] font-[600]">
+      {item.client_name}, thank you for scheduling a CallPage Demo
+    </h2>
+    <Image
+      width={100}
+      height={100}
+      alt="image"
+      className="rounded-full"
+      src={profile} 
+    />
+    <p className="text-[18px] font-[400]">
+      You are meeting with Gurpreet Singh
+    </p>
+               </div>
+    <div className=" flex flex-col gap-3 mt-4">
+    <p>Time: {formattedStartTime(item.start_time, item.duration)}</p>
+      <p>Guests: {item.client_email}</p>
+      <p>
+        Booking details: We’ve sent an email with your full booking
+        details
       </p>
+    </div>
+  </div>
+))}
+
+      </>
     </div>
   );
 };

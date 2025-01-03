@@ -28,25 +28,10 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axiosPrivateForm.post('/contactus/contact-us', formData);
-
-      const result = await response.json();
-      if (response.ok) {
-        toast.success(result.message || 'Form submitted successfully!', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-        setFormData({ name: '', email: '', phone: '', message: '' }); // Reset form
-      } else {
-        toast.error(result.message || 'Something went wrong!', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
+      const response = await axiosPrivateForm.post('/contactus/contact-us', formData);      
+      toast.success('Form submitted successfully!');
     } catch (error) {
-      toast.error('Error submitting form. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    } finally {
-      setIsSubmitting(false);
+      toast.error('Error submitting form. Please try again.');
     }
   };
 

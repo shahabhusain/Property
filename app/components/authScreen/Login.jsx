@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { IoMdPerson } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
 import { axiosPrivateForm } from "@/app/lib/axios";
 const Login = ({ setOpen }) => {
@@ -36,13 +37,15 @@ const Login = ({ setOpen }) => {
         // } else {
         //   setOpen(6);
         // }
-           router.push("/home");
        
+           router.push("/home");
+           toast.success("your account has been created")
       }
       console.log("response.data?.data.token", response.data)
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong!");
       console.error("Sign up failed:", error.response || error.message || error);
+      toast.error("something went wrong")
     } finally {
       setIsLoading(false);
     }
