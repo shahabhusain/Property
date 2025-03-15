@@ -14,3 +14,8 @@ export const axiosPrivateForm = axios.create({
     Accept: "application/json",
   },
 });
+
+export const axiosPrivate = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASEURL,
+ 
+});

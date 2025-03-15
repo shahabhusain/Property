@@ -7,25 +7,25 @@ import icon2 from "../../../public/assets/icon2.png";
 import icon3 from "../../../public/assets/icon3.png";
 import like from "../../../public/assets/likes.png";
 import dislike from "../../../public/assets/like.png";
-import {useCartStore} from "@/app/store/cart-store";
+import { useCartStore } from "@/app/store/cart-store";
+import { axiosPrivateForm } from "@/app/lib/axios";
 
 const Properties = () => {
   const router = useRouter();
   const { cart, toggleCart } = useCartStore();
-  const [visibleItemsCount, setVisibleItemsCount] = useState(6); // Start with 6 items
-   const { properties,fetchProperties } = useCartStore(state=>state);
+  const [visibleItemsCount, setVisibleItemsCount] = useState(6);
+  const { properties, fetchProperties } = useCartStore(state => state);
+  const [likedProperties, setLikedProperties] = useState({});
 
-useEffect(()=>{
-  fetchProperties()
-},[fetchProperties])
-  
+  useEffect(() => {
+    fetchProperties();
+    // Initialize liked properties from localStorage
+    const storedLikedProperties = JSON.parse(localStorage.getItem('likedProperties')) || {};
+    setLikedProperties(storedLikedProperties);
+  }, [fetchProperties]);
 
   const handleNavigate = (id) => {
     router.push(`/home/${id}`);
-  };
-
-  const isProductInCart = (item) => {
-    return cart.some((cartItem) => cartItem.id === item.id);
   };
 
   const handleShowMore = () => {
@@ -34,6 +34,32 @@ useEffect(()=>{
 
   const handleShowLess = () => {
     setVisibleItemsCount(6);
+  };
+
+  const handleLikeDislike = async (propertyId) => {
+    try {
+      const response = await axiosPrivateForm.post('/user/add-property-to-favourites', { propertyId: propertyId });
+      const data = response.data;
+
+      if (data.success) {
+        toggleCart(properties.properties.find(item => item._id === propertyId));
+        const newLikedProperties = {
+          ...likedProperties,
+          [propertyId]: !likedProperties[propertyId]
+        };
+        setLikedProperties(newLikedProperties);
+        // Update localStorage with the new liked properties
+        localStorage.setItem('likedProperties', JSON.stringify(newLikedProperties));
+      } else {
+        console.error('Failed to update favorites:', data.message);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log(error);
+      } else {
+        console.error('Error updating favorites:', error);
+      }
+    }
   };
 
   return (
@@ -49,7 +75,7 @@ useEffect(()=>{
             <Image width={444} height={785} src={item.image} alt="Property" />
             <div className="absolute top-[8rem] left-5 bg-[#5f5b5bb5] py-3 px-5 w-[398px] rounded-md transition-colors duration-300 group-hover:bg-black">
               <h1 className="text-[18px] font-[600] text-white max-w-[355px]">
-              {item.title?.split(" ").slice(0, 3).join(" ")}...
+                {item.title?.split(" ").slice(0, 3).join(" ")}...
               </h1>
               <p className="text-[13px] font-[300] text-white mt-4">{item.location}</p>
               <div className="flex items-center justify-between gap-4 mt-4">
@@ -71,10 +97,10 @@ useEffect(()=>{
               className="absolute top-6 right-6 w-[40px]"
               onClick={(e) => {
                 e.stopPropagation(); // Prevents the parent onClick from firing
-                toggleCart(item); // Toggles the item in the cart
+                handleLikeDislike(item._id); // Toggles the item in the cart
               }}
             >
-              {isProductInCart(item) ? (
+              {likedProperties[item._id] ? (
                 <Image src={like} alt="liked" />
               ) : (
                 <Image src={dislike} alt="not liked" />
